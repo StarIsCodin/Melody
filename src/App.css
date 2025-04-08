@@ -1,6 +1,131 @@
 * {
-    user-select: none;
+  user-select: none;
+}
+.col {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+    url(/BackGround.png);
+}
+
+/* Responsive styles */
+:root {
+  --sidebar-width: 250px;
+  --player-height-desktop: 90px;
+  --player-height-mobile: 70px;
+}
+
+/* Base layout styles */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: var(--sidebar-width);
+  transition: transform 0.3s ease;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Player styles */
+.player {
+  height: var(--player-height-desktop);
+  width: 100%;
+}
+
+/* Mobile nav toggle button */
+.nav-toggle {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: 220px;
   }
-.col{
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url(/BackGround.png);
+
+  .player {
+    height: calc(var(--player-height-desktop) - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 999;
+    transform: translateX(-100%);
+    box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .player {
+    height: var(--player-height-mobile);
+  }
+}
+
+@media (max-width: 576px) {
+  :root {
+    --sidebar-width: 250px;
+  }
+
+  .player {
+    height: var(--player-height-mobile);
+  }
+
+  /* Adjust player controls for small screens */
+  .player-controls {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .player-volume {
+    width: 80%;
+  }
+}
+
+/* Overlay when mobile sidebar is open */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+.sidebar-overlay.active {
+  display: block;
 }
