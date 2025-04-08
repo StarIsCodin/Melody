@@ -10,10 +10,10 @@ import {
   Repeat,
   Shuffle,
   Heart,
-  X
+  X,
 } from "lucide-react";
 import { useMusicPlayer } from "../contexts/MusicPlayerContext"; // Thay đổi import sử dụng file MusicPlayerContext
-import { notifyFavoritesChanged } from '../utils/favoritesManager';
+import { notifyFavoritesChanged } from "../utils/favoritesManager";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Player = () => {
@@ -48,103 +48,113 @@ const Player = () => {
   // Check if current song is in favorites when it changes
   useEffect(() => {
     if (!currentSong) return;
-    
+
     const checkFavoriteStatus = async () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) return;
-      
+
       try {
         const userId = JSON.parse(token)._id;
-        const response = await fetch(`https://melody-api-lh84.onrender.com/api/songs/liked?userId=${userId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          `https://melody-api-lh84.onrender.com/api/songs/liked?userId=${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
-        
+        );
+
         const data = await response.json();
         // Logging for debugging
         console.log("Current song:", currentSong);
         console.log("Liked songs:", data);
-        
+
         // Check if currentSong._id exists, if not try to find the song in the database
         if (!currentSong._id && currentSong.title) {
           // Try to find the song by title and artist
-          const searchResponse = await fetch(`https://melody-api-lh84.onrender.com/api/songs/search?query=${encodeURIComponent(currentSong.title)}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
+          const searchResponse = await fetch(
+            `https://melody-api-lh84.onrender.com/api/songs/search?query=${encodeURIComponent(
+              currentSong.title
+            )}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
             }
-          });
+          );
           const searchResults = await searchResponse.json();
           // Find a matching song
-          const matchingSong = searchResults.find(song => 
-            song.title.toLowerCase() === currentSong.title.toLowerCase() && 
-            song.artist.toLowerCase() === currentSong.artist.toLowerCase()
+          const matchingSong = searchResults.find(
+            (song) =>
+              song.title.toLowerCase() === currentSong.title.toLowerCase() &&
+              song.artist.toLowerCase() === currentSong.artist.toLowerCase()
           );
-          
+
           if (matchingSong) {
             // Store the found ID to use for checks
             currentSong._id = matchingSong._id;
             console.log("Found matching song ID:", matchingSong._id);
           }
         }
-        
-        const likedSongIds = data.map(song => song._id);
-        const isInFavorites = currentSong._id && likedSongIds.includes(currentSong._id);
+
+        const likedSongIds = data.map((song) => song._id);
+        const isInFavorites =
+          currentSong._id && likedSongIds.includes(currentSong._id);
         console.log("Is in favorites:", isInFavorites);
         setIsFavorite(isInFavorites);
       } catch (err) {
-        console.error('Error checking favorite status:', err);
+        console.error("Error checking favorite status:", err);
       }
     };
-    
+
     checkFavoriteStatus();
   }, [currentSong]);
 
   // Handle toggling favorite status
   const handleToggleFavorite = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('Please log in to manage favorite songs.');
+      alert("Please log in to manage favorite songs.");
       return;
     }
-    
+
     try {
       const userId = JSON.parse(token)._id;
-      
+
       if (isFavorite) {
         // Remove from favorites
         setIsFavorite(false);
-        await fetch('https://melody-api-lh84.onrender.com/api/songs/liked', {
-          method: 'DELETE',
+        await fetch("https://melody-api-lh84.onrender.com/api/songs/liked", {
+          method: "DELETE",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ songId: currentSong._id, userId })
+          body: JSON.stringify({ songId: currentSong._id, userId }),
         });
-        
+
         // Notify other components about the change
         notifyFavoritesChanged();
       } else {
         // Add to favorites
         setIsFavorite(true);
-        await fetch('https://melody-api-lh84.onrender.com/api/songs/liked', {
-          method: 'POST',
+        await fetch("https://melody-api-lh84.onrender.com/api/songs/liked", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ songId: currentSong._id, userId })
+          body: JSON.stringify({ songId: currentSong._id, userId }),
         });
-        
+
         // Notify other components about the change
         notifyFavoritesChanged();
       }
     } catch (err) {
-      console.error('Error toggling favorite status:', err);
+      console.error("Error toggling favorite status:", err);
       // Revert UI state if API call fails
       setIsFavorite(!isFavorite);
-      alert('Failed to update favorites. Please try again.');
+      alert("Failed to update favorites. Please try again.");
     }
   };
 
@@ -152,7 +162,7 @@ const Player = () => {
   React.useEffect(() => {
     if (audioRef?.current) {
       const audioElement = audioRef.current;
-  
+
       // Event listener for when the audio is playing
       const handleSongEnd = () => {
         if (isRepeat) {
@@ -162,22 +172,30 @@ const Player = () => {
           playNextSong(); // Move to the next song
         }
       };
-  
+
       const handleTimeUpdate = () => {
         if (audioElement.currentTime === audioElement.duration) {
           playNextSong(); // Automatically move to the next song when current time is equal to total duration
         }
       };
-  
+
       audioElement.addEventListener("ended", handleSongEnd);
       audioElement.addEventListener("timeupdate", handleTimeUpdate);
-  
+
       return () => {
         audioElement.removeEventListener("ended", handleSongEnd);
         audioElement.removeEventListener("timeupdate", handleTimeUpdate);
       };
     }
   }, [audioRef, isRepeat, playNextSong]);
+
+  // Ensure volume changes are applied directly to the audio element
+  useEffect(() => {
+    if (audioRef?.current) {
+      // Convert volume from 0-100 range to 0-1 range that HTML audio uses
+      audioRef.current.volume = isMuted ? 0 : volume / 100;
+    }
+  }, [volume, isMuted, audioRef]);
 
   // Custom styles for Bootstrap
   const customStyles = {
@@ -191,7 +209,8 @@ const Player = () => {
       padding: "15px",
       zIndex: 1000,
       transition: "transform 0.3s ease-in-out",
-      transform: showPlayer && currentSong ? "translateY(0)" : "translateY(100%)"
+      transform:
+        showPlayer && currentSong ? "translateY(0)" : "translateY(100%)",
     },
     coverImage: {
       width: "56px",
@@ -249,7 +268,7 @@ const Player = () => {
       border: "none",
       color: "#adb5bd",
       padding: "4px",
-    }
+    },
   };
 
   // Handle progress change internally before updating context
@@ -258,10 +277,33 @@ const Player = () => {
     handleProgressChange(newTime);
   };
 
-  // Handle volume change internally before updating context
+  // Handle volume change internally before updating context and set it directly on the audio element
   const onVolumeChange = (e) => {
     const newVolume = parseFloat(e.target.value);
+
+    // Set volume directly on the audio element
+    if (audioRef?.current) {
+      audioRef.current.volume = newVolume / 100;
+    }
+
+    // Then update the context state
     handleVolumeChange(newVolume);
+  };
+
+  // Also ensure the mute function directly affects the audio element
+  const handleMuteToggle = () => {
+    if (audioRef?.current) {
+      if (!isMuted) {
+        // Store the current volume before muting
+        audioRef.current.volume = 0;
+      } else {
+        // Restore the volume when unmuting
+        audioRef.current.volume = volume / 100;
+      }
+    }
+
+    // Then toggle the mute state in context
+    toggleMute();
   };
 
   // Return nothing if there's no current song
@@ -270,17 +312,18 @@ const Player = () => {
   return (
     <div style={customStyles.playerContainer}>
       <div className="container-fluid">
-        <button 
-          style={customStyles.closeButton}
-          onClick={closePlayer}
-        >
+        <button style={customStyles.closeButton} onClick={closePlayer}>
           <X size={18} />
         </button>
         <div className="row align-items-center">
           {/* Song information */}
           <div className="col-md-3 d-flex align-items-center">
             <img
-              src={currentSong.imagePath || currentSong.coverUrl || "/placeholder-cover.jpg"}
+              src={
+                currentSong.imagePath ||
+                currentSong.coverUrl ||
+                "/placeholder-cover.jpg"
+              }
               alt={`${currentSong.title} cover`}
               style={customStyles.coverImage}
             />
@@ -296,7 +339,11 @@ const Player = () => {
                 ...(isFavorite ? customStyles.likedButton : {}),
               }}
             >
-              <Heart size={20} fill={isFavorite ? "#dc3545" : "none"} color={isFavorite ? "#dc3545" : "#adb5bd"} />
+              <Heart
+                size={20}
+                fill={isFavorite ? "#dc3545" : "none"}
+                color={isFavorite ? "#dc3545" : "#adb5bd"}
+              />
             </button>
           </div>
 
@@ -382,7 +429,7 @@ const Player = () => {
           {/* Volume controls */}
           <div className="col-md-3 d-flex justify-content-end align-items-center">
             <button
-              onClick={toggleMute}
+              onClick={handleMuteToggle}
               style={customStyles.controlButton}
               className="me-2"
             >

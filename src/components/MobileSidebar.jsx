@@ -14,7 +14,11 @@ function MobileSidebar({ onClose }) {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [notification, setNotification] = useState({ show: false, message: "", type: "success" });
+  const [notification, setNotification] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
 
   const [songData, setSongData] = useState({
     title: "",
@@ -68,11 +72,11 @@ function MobileSidebar({ onClose }) {
 
       // Create a FormData object for file upload
       const formData = new FormData();
-      formData.append('title', songData.title);
-      formData.append('description', songData.description);
-      formData.append('artist', songData.artist);
-      formData.append('audioFile', songData.audioFile);
-      formData.append('imageFile', songData.imageFile);
+      formData.append("title", songData.title);
+      formData.append("description", songData.description);
+      formData.append("artist", songData.artist);
+      formData.append("audioFile", songData.audioFile);
+      formData.append("imageFile", songData.imageFile);
 
       // Log thông tin để debug
       console.log("File âm thanh:", songData.audioFile);
@@ -86,14 +90,14 @@ function MobileSidebar({ onClose }) {
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
           onUploadProgress: (progressEvent) => {
             const percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            setUploadProgress(30 + (percentCompleted * 0.6)); // Scale between 30-90%
-          }
+            setUploadProgress(30 + percentCompleted * 0.6); // Scale between 30-90%
+          },
         }
       );
 
@@ -104,7 +108,7 @@ function MobileSidebar({ onClose }) {
       setNotification({
         show: true,
         message: "Bài hát đã được thêm thành công!",
-        type: "success"
+        type: "success",
       });
 
       // Reset form
@@ -117,12 +121,14 @@ function MobileSidebar({ onClose }) {
       });
     } catch (error) {
       console.error("Lỗi khi thêm bài hát", error);
-      
+
       // Show error notification popup
       setNotification({
         show: true,
-        message: `Có lỗi xảy ra: ${error.response?.data?.error || error.message}`,
-        type: "error"
+        message: `Có lỗi xảy ra: ${
+          error.response?.data?.error || error.message
+        }`,
+        type: "error",
       });
     } finally {
       setLoading(false);
@@ -169,7 +175,12 @@ function MobileSidebar({ onClose }) {
       </div>
 
       {/* Music Upload Modal */}
-      <Modal show={show} onHide={handleClose} centered className="music-upload-modal">
+      <Modal
+        show={show}
+        onHide={handleClose}
+        centered
+        className="music-upload-modal"
+      >
         <Modal.Header closeButton className="modal-header">
           <Modal.Title>
             <BsFillMusicPlayerFill className="me-2" />
@@ -190,7 +201,7 @@ function MobileSidebar({ onClose }) {
                 className="form-input"
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-4">
               <Form.Control
                 as="textarea"
@@ -202,7 +213,7 @@ function MobileSidebar({ onClose }) {
                 className="form-input"
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-4">
               <Form.Control
                 type="text"
@@ -214,7 +225,7 @@ function MobileSidebar({ onClose }) {
                 className="form-input"
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-4">
               <Form.Label className="form-label">
                 <BsMusicNote className="me-2" />
@@ -234,7 +245,7 @@ function MobileSidebar({ onClose }) {
                 </div>
               )}
             </Form.Group>
-            
+
             <Form.Group className="mb-4">
               <Form.Label className="form-label">
                 <BiImage className="me-2" />
@@ -254,21 +265,22 @@ function MobileSidebar({ onClose }) {
                 </div>
               )}
             </Form.Group>
-            
+
             {loading && (
               <div className="progress mb-3">
-                <div 
-                  className="progress-bar progress-bar-striped progress-bar-animated" 
-                  role="progressbar" 
-                  style={{ width: `${uploadProgress}%` }} 
-                  aria-valuenow={uploadProgress} 
-                  aria-valuemin="0" 
-                  aria-valuemax="100">
+                <div
+                  className="progress-bar progress-bar-striped progress-bar-animated"
+                  role="progressbar"
+                  style={{ width: `${uploadProgress}%` }}
+                  aria-valuenow={uploadProgress}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                >
                   {uploadProgress}%
                 </div>
               </div>
             )}
-            
+
             <div className="modal-actions">
               <Button
                 variant="outline-light"
@@ -278,14 +290,14 @@ function MobileSidebar({ onClose }) {
               >
                 Hủy
               </Button>
-              <Button
-                type="submit"
-                className="btn-submit"
-                disabled={loading}
-              >
+              <Button type="submit" className="btn-submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Đang tải lên...
                   </>
                 ) : (
