@@ -395,7 +395,7 @@ e.currentTarget.style.boxShadow = 'none';
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .song-number {
           transition: all 0.3s ease;
         }
