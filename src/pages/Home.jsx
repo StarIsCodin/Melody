@@ -96,10 +96,13 @@ const Home = () => {
               {error}
             </div>
           ) : (
-            <div className="row row-cols-2 row-cols-md-4 bg-white">
+            <div className="row row-cols-2 row-cols-md-4 bg-white music-card-container">
               {songs.length > 0 ? (
                 songs.map((song) => (
-                  <div className="col m-auto mb-4 bg-white" key={song._id}>
+                  <div
+                    className="col mb-5 bg-white music-card-item"
+                    key={song._id}
+                  >
                     <MusicCard
                       id={song._id}
                       title={song.title}
@@ -120,15 +123,6 @@ const Home = () => {
           )}
         </div>
       </div>
-
-      {/* Player is now in the App component, not here */}
-
-      {/* Footer */}
-      <footer className="bg-dark text-white text-center py-4 mt-5">
-        <div className="container">
-          <p className="mb-0">© 2025 MelodyApp. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 };

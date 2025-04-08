@@ -1,0 +1,15 @@
+/* Scrollable content containers */
+.scrollable-content {
+  max-height: 75vh; /* Adjust this value as needed */
+  overflow-y: auto;
+  padding-right: 5px; /* Add some padding to prevent content from touching scrollbar */
+}
+
+/* Additional styling for search and liked songs containers */
+.search-results,
+.liked-songs-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

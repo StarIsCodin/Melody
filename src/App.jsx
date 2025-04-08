@@ -10,6 +10,8 @@ import Player from "./components/Player";
 import { MusicPlayerProvider } from "./contexts/MusicPlayerContext";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 import SidebarToggle from "./components/SidebarToggle";
+import "./stylecomponent/scrollbar.css"; // Add this line if you created a separate file
+import "./stylecomponent/common.css"; // Add this import
 
 function App() {
   if (process.env.NODE_ENV === "production") disableReactDevTools();
