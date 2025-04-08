@@ -123,6 +123,28 @@ const Home = () => {
           )}
         </div>
       </div>
+      <footer style={{
+  textAlign: 'center',
+  padding: '0.5rem',
+  backgroundColor: '#1e1e1e',
+  color: '#ffffff',
+  fontFamily: 'Segoe UI, sans-serif',
+  fontSize: '0.875rem', // tương đương ~14px
+  width: '100%'
+}}>
+  <p>
+    Made with
+    <svg
+      style={{ width: '1rem', height: '1rem', fill: 'white', margin: '0 0.3rem' }}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" />
+    </svg>
+    by Melody · ©️ 2025 All rights reserved.
+  </p>
+</footer>
+
     </div>
   );
 };

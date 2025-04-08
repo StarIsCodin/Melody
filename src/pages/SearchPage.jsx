@@ -393,6 +393,7 @@ e.currentTarget.style.boxShadow = 'none';
           </table>
           )}
         </div>
+        
       </div>
 
       <style>{`
