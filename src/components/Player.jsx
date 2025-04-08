@@ -427,29 +427,46 @@ const Player = () => {
           </div>
 
           {/* Volume controls */}
-          <div className="col-md-3 d-flex justify-content-end align-items-center">
-            <button
-              onClick={handleMuteToggle}
-              style={customStyles.controlButton}
-              className="me-2"
+          <div
+            id="volume"
+            className="col-md-3 d-none d-md-flex justify-content-end align-items-center"
+          >
+            <div
+              className="d-flex align-items-center justify-content-end"
+              style={{ width: "100%" }}
             >
-              {isMuted || volume === 0 ? (
-                <VolumeX size={20} />
-              ) : volume < 50 ? (
-                <Volume1 size={20} />
-              ) : (
-                <Volume2 size={20} />
-              )}
-            </button>
-            <div style={{ width: "100px" }}>
-              <input
-                type="range"
-                className="form-range"
-                min="0"
-                max="100"
-                value={isMuted ? 0 : volume}
-                onChange={onVolumeChange}
-              />
+              <button
+                onClick={handleMuteToggle}
+                style={{
+                  ...customStyles.controlButton,
+                  margin: "0 10px 0 0",
+                  padding: "6px",
+                }}
+              >
+                {isMuted || volume === 0 ? (
+                  <VolumeX size={20} />
+                ) : volume < 50 ? (
+                  <Volume1 size={20} />
+                ) : (
+                  <Volume2 size={20} />
+                )}
+              </button>
+              <div
+                style={{
+                  width: "100px",
+                  paddingTop: "8px", // Increased from 6px to 8px (another 0.1rem)
+                  marginRight: "8px",
+                }}
+              >
+                <input
+                  type="range"
+                  className="form-range"
+                  min="0"
+                  max="100"
+                  value={isMuted ? 0 : volume}
+                  onChange={onVolumeChange}
+                />
+              </div>
             </div>
           </div>
         </div>
