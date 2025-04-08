@@ -14,7 +14,7 @@ function App() {
   if (process.env.NODE_ENV === 'production') disableReactDevTools()
 
   return (
-    <BrowserRouter basename="/Melody"> 
+    <BrowserRouter basename="/"> 
     <MusicPlayerProvider>
       <div className='container-fluid vh-100' >
         <Row>
