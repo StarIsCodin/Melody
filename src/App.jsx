@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { BrowserRouter } from "react-router-dom";
-import { Row, Col } from "react-bootstrap";
 import Sidebar from "./components/Sidebar";
+import MobileSidebar from "./components/MobileSidebar";
 import Page from "./components/Page";
 import Header from "./components/Header";
 import Player from "./components/Player";
@@ -15,6 +15,23 @@ function App() {
   if (process.env.NODE_ENV === "production") disableReactDevTools();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener
+    window.addEventListener("resize", checkIfMobile);
+
+    // Cleanup
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -24,17 +41,33 @@ function App() {
     <BrowserRouter basename="/">
       <MusicPlayerProvider>
         <div className="app-container">
-          <SidebarToggle isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+          {/* Only show toggle on mobile when sidebar is closed */}
+          {isMobile && !sidebarOpen && (
+            <SidebarToggle toggleSidebar={() => setSidebarOpen(true)} />
+          )}
 
           <div className="content-container">
-            <div className={`sidebar ${sidebarOpen ? "active" : ""}`}>
-              <Sidebar />
-            </div>
+            {/* Desktop Sidebar (always visible on desktop) */}
+            {!isMobile && (
+              <div className="sidebar">
+                <Sidebar />
+              </div>
+            )}
 
-            <div
-              className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
-              onClick={() => setSidebarOpen(false)}
-            ></div>
+            {/* Mobile Sidebar (visible only when toggled) */}
+            {isMobile && (
+              <div className={`sidebar mobile ${sidebarOpen ? "active" : ""}`}>
+                <MobileSidebar onClose={() => setSidebarOpen(false)} />
+              </div>
+            )}
+
+            {/* Overlay to close mobile sidebar */}
+            {isMobile && (
+              <div
+                className={`sidebar-overlay ${sidebarOpen ? "active" : ""}`}
+                onClick={() => setSidebarOpen(false)}
+              ></div>
+            )}
 
             <div className="main-content col">
               <Header />
@@ -42,7 +75,7 @@ function App() {
             </div>
           </div>
 
-          <div className="player">
+          <div className="player fixed-bottom">
             <Player />
           </div>
         </div>
@@ -52,4 +85,3 @@ function App() {
 }
 
 export default App;
-

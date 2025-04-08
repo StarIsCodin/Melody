@@ -1,13 +1,13 @@
 import React from "react";
 
-const SidebarToggle = ({ isOpen, toggleSidebar }) => {
+const SidebarToggle = ({ toggleSidebar }) => {
   return (
     <button
       className="nav-toggle"
       onClick={toggleSidebar}
-      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-label="Open menu"
     >
-      {isOpen ? "✕" : "☰"}
+      {">"}
     </button>
   );
 };

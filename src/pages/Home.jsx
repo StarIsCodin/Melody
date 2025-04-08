@@ -82,7 +82,7 @@ const Home = () => {
 
       <div className="container">
         {/* All Songs Section */}
-        <div className="songs-container rounded" id="songs">
+        <div className="songs-container rounded " id="songs">
           <h2 className="section-title">All Songs</h2>
           {loading ? (
             <div className="text-center py-5">
@@ -96,10 +96,10 @@ const Home = () => {
               {error}
             </div>
           ) : (
-            <div className="row">
+            <div className="row row-cols-2 row-cols-md-4 bg-white">
               {songs.length > 0 ? (
                 songs.map((song) => (
-                  <div className="col-md-3 col-sm-6 mb-4" key={song._id}>
+                  <div className="col m-auto mb-4 bg-white" key={song._id}>
                     <MusicCard
                       id={song._id}
                       title={song.title}
@@ -109,6 +109,7 @@ const Home = () => {
                       audioUrl={song.audioPath}
                       truncateTitle={true}
                       truncateDescription={true}
+                      className="music-card-responsive"
                     />
                   </div>
                 ))

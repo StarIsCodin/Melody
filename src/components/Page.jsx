@@ -9,7 +9,7 @@ import PasswordReset from '../pages/PasswordReset';
 
 function Page() {
   return (
-    <div className="vh-100 m-2 rounded">
+    <div className="vh-100 m-auto rounded">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/SearchPage" element={<SearchPage />} />
