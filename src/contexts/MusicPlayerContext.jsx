@@ -119,7 +119,7 @@ export const MusicPlayerProvider = ({ children }) => {
     try {
       if (!song._id && song.title) {
         const response = await fetch(
-          `https://melody-r0wr.onrender.com/api/songs/search?query=${encodeURIComponent(song.title)}`
+          `https://melody-api-lh84.onrender.com/api/songs/search?query=${encodeURIComponent(song.title)}`
         );
         const data = await response.json();
         const matchingSong = data.find(

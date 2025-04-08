@@ -19,7 +19,7 @@ const Home = () => {
     const fetchSongs = async () => {
       try {
         const response = await axios.get(
-          "https://melody-r0wr.onrender.com/api/songs"
+          "https://melody-api-lh84.onrender.com/api/songs"
         );
         setSongs(response.data);
         setLoading(false);

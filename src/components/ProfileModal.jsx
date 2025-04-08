@@ -65,7 +65,7 @@ const ProfileModal = ({ showModal, setShowModal }) => {
         // Save the updated token back to localStorage
         localStorage.setItem("token", JSON.stringify(userData));
       }
-      const response = await axios.put("https://melody-r0wr.onrender.com/api/users/update-profile", updatedProfile, {
+      const response = await axios.put("https://melody-api-lh84.onrender.com/api/users/update-profile", updatedProfile, {
         headers: { "Content-Type": "application/json" },
       });
   

@@ -54,7 +54,7 @@ function PasswordResetModal({ showModal, setShowModal }){
         }
 
         try {
-            const response = await axios.post("https://melody-r0wr.onrender.com/api/users/change-password", {
+            const response = await axios.post("https://melody-api-lh84.onrender.com/api/users/change-password", {
                 email: email,
                 oldPassword,
                 newPassword: password

@@ -67,7 +67,7 @@ function Sidebar() {
       // Upload the song data along with files to the backend
       // Thay đổi endpoint từ /upload thành /upload-with-files để sử dụng API Cloudinary mới
       const response = await axios.post(
-        "https://melody-r0wr.onrender.com/api/songs/upload-with-files",
+        "https://melody-api-lh84.onrender.com/api/songs/upload-with-files",
         formData,
         {
           headers: {
